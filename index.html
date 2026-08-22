@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Établi">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#163A33">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Établi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wax:#163A33;
+  --wax-2:#1E4941;
+  --wax-3:#12302A;
+  --turq:#4FC3A1;
+  --steel:#A9B8B2;
+  --silver:#EDF1EF;
+  --gold:#E7B04A;
+  --line:rgba(169,184,178,.18);
+
+  --display:"Syne","Futura","Trebuchet MS",sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono","SF Mono",Menlo,Consolas,monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--wax);
+  color:var(--steel);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.5;
+  min-height:100vh;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-tap-highlight-color:transparent;
+}
+
+.wrap{max-width:520px;margin:0 auto;padding:28px 20px 56px}
+
+/* ---------- en-tête ---------- */
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--turq);
+}
+
+.masthead h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(38px,13vw,52px);
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--silver);
+  margin-top:6px;
+}
+
+.masthead p{
+  font-size:14px;
+  margin-top:10px;
+  max-width:34ch;
+}
+
+/* ---------- onglets ---------- */
+
+.tabs{
+  display:flex;
+  gap:4px;
+  margin:26px 0 24px;
+  padding:4px;
+  background:var(--wax-3);
+  border:1px solid var(--line);
+  border-radius:11px;
+}
+
+.tabs button{
+  flex:1;
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:var(--steel);
+  font-family:var(--body);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+  padding:11px 4px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+}
+
+.tabs button[aria-selected="true"]{
+  background:var(--wax-2);
+  color:var(--silver);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
+}
+
+.panel[hidden]{display:none}
+
+/* ---------- champs ---------- */
+
+.field{margin-bottom:18px}
+
+.field > label,
+.group-label{
+  display:block;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--steel);
+  margin-bottom:8px;
+}
+
+.input-row{display:flex;gap:10px}
+.input-row .field{flex:1;margin-bottom:0;min-width:0}
+
+input[type="text"],select{
+  width:100%;
+  appearance:none;
+  background:var(--wax-3);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--silver);
+  font-family:var(--mono);
+  font-size:17px;
+  padding:13px 14px;
+  transition:border-color .18s ease;
+}
+
+select{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%23A9B8B2' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+
+input:focus-visible,select:focus-visible,button:focus-visible{
+  outline:2px solid var(--turq);
+  outline-offset:2px;
+}
+
+input:focus,select:focus{border-color:var(--turq);outline-offset:2px}
+
+/* ---------- pastilles matière ---------- */
+
+.metals{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:2px 2px 10px;
+  scrollbar-width:none;
+}
+.metals::-webkit-scrollbar{display:none}
+
+.metal{
+  flex:0 0 auto;
+  appearance:none;
+  border:1px solid var(--line);
+  background:var(--wax-3);
+  border-radius:9px;
+  padding:8px 11px 9px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  transition:border-color .18s ease,background .18s ease;
+}
+
+.metal .chip{
+  width:26px;height:26px;
+  border-radius:50%;
+  box-shadow:0 1px 3px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.18) inset;
+}
+
+.metal .name{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  white-space:nowrap;
+  color:var(--steel);
+}
+
+.metal[aria-pressed="true"]{
+  border-color:var(--turq);
+  background:var(--wax-2);
+}
+.metal[aria-pressed="true"] .name{color:var(--silver)}
+
+/* ---------- marge segmentée ---------- */
+
+.seg{display:flex;gap:6px}
+
+.seg button{
+  flex:1;
+  appearance:none;
+  border:1px solid var(--line);
+  background:var(--wax-3);
+  color:var(--steel);
+  font-family:var(--mono);
+  font-size:13px;
+  padding:10px 2px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:border-color .18s ease,color .18s ease;
+}
+
+.seg button[aria-pressed="true"]{
+  border-color:var(--turq);
+  color:var(--silver);
+  background:var(--wax-2);
+}
+
+/* ---------- plaque estampée ---------- */
+
+.plate{
+  margin-top:24px;
+  background:var(--wax-3);
+  border-radius:13px;
+  padding:22px 20px;
+  box-shadow:
+    0 2px 5px rgba(0,0,0,.34) inset,
+    0 1px 0 rgba(255,255,255,.05);
+}
+
+.plate .plate-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--turq);
+}
+
+.readout{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  margin-top:9px;
+}
+
+.readout .value{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(40px,13vw,54px);
+  line-height:1;
+  letter-spacing:-.025em;
+  color:var(--gold);
+  font-variant-numeric:tabular-nums;
+}
+
+.readout .unit{
+  font-family:var(--mono);
+  font-size:15px;
+  color:var(--steel);
+}
+
+.plate .note{
+  font-size:13px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  color:var(--steel);
+}
+
+.plate .note b{color:var(--silver);font-weight:500;font-family:var(--mono)}
+
+/* ---------- lignes de conversion ---------- */
+
+.rows{margin-top:18px;border-top:1px solid var(--line)}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:14px;
+  padding:12px 2px;
+  border-bottom:1px solid var(--line);
+}
+
+.row .k{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.row .v{
+  font-family:var(--mono);
+  font-size:18px;
+  color:var(--silver);
+  font-variant-numeric:tabular-nums;
+}
+
+.hint{
+  font-size:13px;
+  line-height:1.55;
+  margin-top:18px;
+  padding-left:13px;
+  border-left:2px solid var(--turq);
+}
+
+.divider{
+  margin:30px 0 22px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+}
+
+.divider h2{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:20px;
+  color:var(--silver);
+  letter-spacing:-.01em;
+  margin-bottom:4px;
+}
+
+.divider p{font-size:13px;margin-bottom:18px}
+
+footer{
+  margin-top:36px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(169,184,178,.45);
+  text-align:center;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Atelier</div>
+    <h1>Établi</h1>
+    <p>Les trois calculs qu'on finit toujours par rechercher.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-cast"  aria-selected="true"  aria-controls="p-cast">Fonte</button>
+    <button role="tab" id="tab-stock" aria-selected="false" aria-controls="p-stock">Matière</button>
+    <button role="tab" id="tab-ring"  aria-selected="false" aria-controls="p-ring">Bague</button>
+  </div>
+
+  <!-- ============ FONTE ============ -->
+  <section class="panel" id="p-cast" role="tabpanel" aria-labelledby="tab-cast">
+
+    <div class="field">
+      <label for="waxWeight">Poids du modèle en cire</label>
+      <input type="text" id="waxWeight" inputmode="decimal" placeholder="grammes">
+    </div>
+
+    <div class="field">
+      <span class="group-label">Fondre en</span>
+      <div class="metals" id="metals-cast"></div>
+    </div>
+
+    <div class="field">
+      <span class="group-label">Marge tiges et culot</span>
+      <div class="seg" id="seg-allow">
+        <button type="button" data-v="0"  aria-pressed="false">0&nbsp;%</button>
+        <button type="button" data-v="10" aria-pressed="true">10&nbsp;%</button>
+        <button type="button" data-v="15" aria-pressed="false">15&nbsp;%</button>
+        <button type="button" data-v="20" aria-pressed="false">20&nbsp;%</button>
+      </div>
+    </div>
+
+    <div class="plate">
+      <div class="plate-label">Métal à commander</div>
+      <div class="readout"><span class="value" id="castOut">—</span><span class="unit">g</span></div>
+      <div class="note" id="castNote">Indiquer le poids de la cire pour voir le résultat en métal.</div>
+    </div>
+
+    <p class="hint">La cire est comptée à 1,00 g/cm³ : le poids en métal revient donc au poids de cire multiplié par la densité de l'alliage. Autant retenir par cœur celui qui revient le plus souvent.</p>
+  </section>
+
+  <!-- ============ MATIÈRE ============ -->
+  <section class="panel" id="p-stock" role="tabpanel" aria-labelledby="tab-stock" hidden>
+
+    <div class="field">
+      <span class="group-label">Matière</span>
+      <div class="metals" id="metals-stock"></div>
+    </div>
+
+    <div class="field">
+      <label for="stockForm">Forme</label>
+      <select id="stockForm">
+        <option value="sheet">Plaque</option>
+        <option value="wire">Fil rond</option>
+      </select>
+    </div>
+
+    <div id="sheetInputs">
+      <div class="input-row" style="margin-bottom:18px">
+        <div class="field">
+          <label for="sLen">Long. mm</label>
+          <input type="text" id="sLen" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="sWid">Larg. mm</label>
+          <input type="text" id="sWid" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="sThk">Ép. mm</label>
+          <input type="text" id="sThk" inputmode="decimal" placeholder="0">
+        </div>
+      </div>
+    </div>
+
+    <div id="wireInputs" hidden>
+      <div class="input-row" style="margin-bottom:18px">
+        <div class="field">
+          <label for="wDia">Diamètre mm</label>
+          <input type="text" id="wDia" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="wLen">Longueur mm</label>
+          <input type="text" id="wLen" inputmode="decimal" placeholder="0">
+        </div>
+      </div>
+    </div>
+
+    <div class="plate">
+      <div class="plate-label">Pèse</div>
+      <div class="readout"><span class="value" id="stockOut">—</span><span class="unit">g</span></div>
+      <div class="note" id="stockNote">Renseigner les dimensions pour peser la matière.</div>
+    </div>
+  </section>
+
+  <!-- ============ BAGUE ============ -->
+  <section class="panel" id="p-ring" role="tabpanel" aria-labelledby="tab-ring" hidden>
+
+    <div class="input-row" style="margin-bottom:18px">
+      <div class="field">
+        <label for="sizeVal">Taille connue</label>
+        <input type="text" id="sizeVal" inputmode="decimal" placeholder="52">
+      </div>
+      <div class="field">
+        <label for="sizeSys">Exprimée en</label>
+        <select id="sizeSys">
+          <option value="eu">FR / EU</option>
+          <option value="us">US</option>
+          <option value="dia">Diamètre mm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="row"><span class="k">FR / EU</span><span class="v" id="oEu">—</span></div>
+      <div class="row"><span class="k">US</span><span class="v" id="oUs">—</span></div>
+      <div class="row"><span class="k">UK</span><span class="v" id="oUk">—</span></div>
+      <div class="row"><span class="k">Ø intérieur</span><span class="v" id="oDia">—</span></div>
+    </div>
+
+    <p class="hint">Un anneau de 4 mm ou plus large serre davantage qu'un anneau fin. Prévoir une demi-taille US de plus, soit environ 1,5 mm de tour de doigt.</p>
+
+    <div class="divider">
+      <h2>Longueur de la bande</h2>
+      <p>La longueur à découper avant la mise en forme.</p>
+
+      <div class="input-row" style="margin-bottom:18px">
+        <div class="field">
+          <label for="bDia">Ø intérieur mm</label>
+          <input type="text" id="bDia" inputmode="decimal" placeholder="16,5">
+        </div>
+        <div class="field">
+          <label for="bThk">Épaisseur mm</label>
+          <input type="text" id="bThk" inputmode="decimal" placeholder="1,2">
+        </div>
+      </div>
+
+      <div class="plate">
+        <div class="plate-label">Découper à</div>
+        <div class="readout"><span class="value" id="blankOut">—</span><span class="unit">mm</span></div>
+        <div class="note" id="blankNote">Mesurée au milieu de l'épaisseur : celle-ci compte donc.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Pour Emma</footer>
+</div>
+
+<script>
+"use strict";
+
+var METALS = [
+  { id:"ster",  name:"Argent 925", d:10.36, c:"#C8CCCE" },
+  { id:"fine",  name:"Argent 999", d:10.49, c:"#DCE0E2" },
+  { id:"9k",    name:"Or 375",     d:11.30, c:"#D6B77A" },
+  { id:"14k",   name:"Or 585",     d:13.10, c:"#E0BC72" },
+  { id:"18k",   name:"Or 750",     d:15.60, c:"#E8C158" },
+  { id:"22k",   name:"Or 916",     d:17.80, c:"#F0C63F" },
+  { id:"24k",   name:"Or fin",     d:19.32, c:"#F5C518" },
+  { id:"wg",    name:"Or gris 750",d:15.50, c:"#E4E6E8" },
+  { id:"plat",  name:"Platine",    d:20.70, c:"#D4D8DC" },
+  { id:"pall",  name:"Palladium",  d:12.00, c:"#C3C7C9" },
+  { id:"brass", name:"Laiton",     d:8.50,  c:"#C9A227" },
+  { id:"bronze",name:"Bronze",     d:8.80,  c:"#B08D57" },
+  { id:"copper",name:"Cuivre",     d:8.96,  c:"#B87333" }
+];
+
+var state = { metal:"ster", allow:10 };
+
+/* dernier alliage choisi, conservé entre deux lancements */
+var STORE_KEY = "etabli.metal";
+
+function loadMetal(){
+  try {
+    var saved = localStorage.getItem(STORE_KEY);
+    for (var i=0;i<METALS.length;i++) if (METALS[i].id===saved) return saved;
+  } catch(e){}
+  return state.metal;
+}
+function saveMetal(id){
+  try { localStorage.setItem(STORE_KEY, id); } catch(e){}
+}
+state.metal = loadMetal();
+
+/* virgule décimale à l'affichage */
+function fr(n, d){ return n.toFixed(d).replace(".", ","); }
+
+function metalById(id){
+  for (var i=0;i<METALS.length;i++) if (METALS[i].id===id) return METALS[i];
+  return METALS[0];
+}
+
+function buildMetals(hostId){
+  var host = document.getElementById(hostId);
+  METALS.forEach(function(m){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "metal";
+    b.dataset.id = m.id;
+    b.setAttribute("aria-pressed", m.id === state.metal ? "true" : "false");
+    b.setAttribute("aria-label", m.name + ", " + fr(m.d,2) + " grammes par centimètre cube");
+    b.innerHTML = '<span class="chip" style="background:' + m.c + '"></span>' +
+                  '<span class="name">' + m.name + '</span>';
+    b.addEventListener("click", function(){
+      state.metal = m.id;
+      saveMetal(m.id);
+      syncMetals();
+      recalc();
+    });
+    host.appendChild(b);
+  });
+}
+
+function syncMetals(){
+  var all = document.querySelectorAll(".metal");
+  for (var i=0;i<all.length;i++){
+    all[i].setAttribute("aria-pressed", all[i].dataset.id === state.metal ? "true" : "false");
+  }
+}
+
+buildMetals("metals-cast");
+buildMetals("metals-stock");
+
+/* onglets */
+var TABS = [["tab-cast","p-cast"],["tab-stock","p-stock"],["tab-ring","p-ring"]];
+TABS.forEach(function(pair){
+  document.getElementById(pair[0]).addEventListener("click", function(){
+    TABS.forEach(function(p){
+      var on = p[0] === pair[0];
+      document.getElementById(p[0]).setAttribute("aria-selected", on ? "true" : "false");
+      document.getElementById(p[1]).hidden = !on;
+    });
+  });
+});
+
+/* marge de coulée */
+var segBtns = document.querySelectorAll("#seg-allow button");
+for (var s=0;s<segBtns.length;s++){
+  segBtns[s].addEventListener("click", function(){
+    state.allow = parseFloat(this.dataset.v);
+    for (var j=0;j<segBtns.length;j++){
+      segBtns[j].setAttribute("aria-pressed", segBtns[j] === this ? "true" : "false");
+    }
+    recalc();
+  }.bind(segBtns[s]));
+}
+
+/* accepte la virgule comme séparateur */
+function num(id){
+  var raw = document.getElementById(id).value.replace(",", ".").trim();
+  var v = parseFloat(raw);
+  return (isFinite(v) && v > 0) ? v : 0;
+}
+function set(id, txt){ document.getElementById(id).textContent = txt; }
+
+/* tailles de bague */
+var UK = ["B½","C½","D½","E","F","G","H½","I½","J½","K½","L½","M½","N½","O½","P½","Q½","R½","S½","T½","U½","V½","W½","Y","Z","Z+1"];
+
+function ukFromUs(us){
+  var idx = Math.round((us - 1) / 0.5);
+  if (idx < 0 || idx >= UK.length) return "—";
+  return UK[idx];
+}
+
+function ringCalc(){
+  var v = num("sizeVal");
+  var sys = document.getElementById("sizeSys").value;
+  if (!v){ set("oEu","—"); set("oUs","—"); set("oUk","—"); set("oDia","—"); return; }
+
+  var circ;
+  if (sys === "eu")  circ = v;
+  else if (sys === "us") circ = 36.537 + 2.5535 * v;
+  else circ = Math.PI * v;
+
+  var dia = circ / Math.PI;
+  var us  = (circ - 36.537) / 2.5535;
+
+  set("oEu", fr(circ,1));
+  set("oUs", us > 0 ? (Math.round(us*4)/4).toFixed(2).replace(/\.?0+$/,"").replace(".",",") : "—");
+  set("oUk", us > 0 ? ukFromUs(us) : "—");
+  set("oDia", fr(dia,2) + " mm");
+}
+
+function recalc(){
+  var m = metalById(state.metal);
+
+  /* fonte */
+  var wax = num("waxWeight");
+  if (wax){
+    var bare  = wax * m.d;                       // cire comptée à 1,00 g/cm³
+    var total = bare * (1 + state.allow / 100);
+    set("castOut", fr(total,2));
+    document.getElementById("castNote").innerHTML =
+      "Poids de fonte <b>" + fr(bare,2) + " g</b> en " + m.name +
+      ", plus " + state.allow + "&nbsp;% pour les tiges. Multiplicateur <b>×" + fr(m.d,2) + "</b>.";
+  } else {
+    set("castOut","—");
+    document.getElementById("castNote").textContent = "Indiquer le poids de la cire pour voir le résultat en métal.";
+  }
+
+  /* matière */
+  var form = document.getElementById("stockForm").value;
+  var mm3 = 0, desc = "";
+  if (form === "sheet"){
+    mm3 = num("sLen") * num("sWid") * num("sThk");
+    desc = "Plaque";
+  } else {
+    var r = num("wDia") / 2;
+    mm3 = Math.PI * r * r * num("wLen");
+    desc = "Fil rond";
+  }
+  if (mm3 > 0){
+    set("stockOut", fr(mm3 / 1000 * m.d, 2));
+    document.getElementById("stockNote").innerHTML =
+      desc + " en " + m.name + ", <b>" + fr(mm3/1000,3) + " cm³</b> à " + fr(m.d,2) + " g/cm³.";
+  } else {
+    set("stockOut","—");
+    document.getElementById("stockNote").textContent = "Renseigner les dimensions pour peser la matière.";
+  }
+
+  /* bande */
+  var bd = num("bDia"), bt = num("bThk");
+  if (bd){
+    set("blankOut", fr(Math.PI * (bd + bt), 1));
+    document.getElementById("blankNote").innerHTML =
+      "Fibre neutre d'une bande de <b>" + fr(bt,2) + " mm</b> autour d'un Ø de <b>" + fr(bd,1) + " mm</b>.";
+  } else {
+    set("blankOut","—");
+    document.getElementById("blankNote").textContent = "Mesurée au milieu de l'épaisseur : celle-ci compte donc.";
+  }
+
+  ringCalc();
+}
+
+document.getElementById("stockForm").addEventListener("change", function(){
+  var wire = this.value === "wire";
+  document.getElementById("sheetInputs").hidden = wire;
+  document.getElementById("wireInputs").hidden = !wire;
+  recalc();
+});
+
+["waxWeight","sLen","sWid","sThk","wDia","wLen","sizeVal","bDia","bThk"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", recalc);
+});
+document.getElementById("sizeSys").addEventListener("change", recalc);
+
+recalc();
+
+/* cache hors ligne */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
