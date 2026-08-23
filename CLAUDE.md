@@ -1,10 +1,10 @@
 # Établi
 
-A single-page bench calculator for a jewellery student. Three calculations she'd
+A single-page bench calculator for a jewellery student. Three calculations they'd
 otherwise look up every week: what a wax model weighs once cast, what a piece of
 stock weighs, and ring sizing including blank length.
 
-Built as a gift. It is deliberately small. Resist growing it.
+It is deliberately small. Resist growing it.
 
 ---
 
@@ -18,11 +18,11 @@ These are not preferences. Breaking any of them breaks the point of the project.
 - **No build step.** No `package.json`, no bundler, no transpiler, no framework.
   If a change requires npm, it is the wrong change.
 - **Vanilla JS, conservative syntax.** No modules, no JSX, no TypeScript.
-- **Works offline.** She uses it at a bench, sometimes with no signal. `sw.js`
+- **Works offline.** It is used at a bench, sometimes with no signal. `sw.js`
   caches the page, manifest and icons on first load and serves them cache-first
   afterwards (refreshing in the background). The Google Fonts stylesheet and font
   files are cached the same way once fetched; if never fetched, the system
-  fallback stack is used. She must open the app once online for this to work.
+  fallback stack is used. The app must be opened once online for this to work.
 - **Installs to iOS home screen.** The `apple-mobile-web-app-*` meta tags, the
   `apple-touch-icon`, the manifest and the `env(safe-area-inset-*)` padding exist
   for this. Don't remove them.
@@ -31,13 +31,13 @@ These are not preferences. Breaking any of them breaks the point of the project.
 
 ## Audience and language
 
-The user is a jewellery student in Brussels working in French.
+The user is a French-speaking jewellery student in Belgium.
 
 - **UI is French.** All labels, hints, empty states, `aria-label`s.
 - **Impersonal register.** Instructions use infinitives — *Indiquer le poids*,
   *Renseigner les dimensions*. Never `tu`, never `vous`.
 - **Comma decimals, both directions.** Inputs are `type="text"` with
-  `inputmode="decimal"` precisely so she can type `16,5`; `num()` normalises the
+  `inputmode="decimal"` precisely so one can type `16,5`; `num()` normalises the
   comma before parsing. Output goes through `fr(n, decimals)`. Do not switch the
   inputs back to `type="number"` — it fights the comma on some browsers.
 - **French typography.** Non-breaking space before `%` (`&nbsp;%`).
@@ -57,7 +57,7 @@ The user is a jewellery student in Brussels working in French.
 | Neutral axis | Fibre neutre | Axe neutre |
 
 Alloys are named in **millièmes**, not carats: `Argent 925`, `Or 750`, `Or gris 750`.
-That is what she sees stamped on stock and what her school teaches. `18k` is the
+That is what is stamped on stock and what Belgian schools teach. `18k` is the
 Anglo-Saxon convention and is wrong for this audience.
 
 ---
@@ -66,7 +66,7 @@ Anglo-Saxon convention and is wrong for this audience.
 
 The palette is carving wax — the deep green-teal of a Ferris block — with gold for
 outputs, because gold is the thing being calculated toward. This is a deliberate
-choice grounded in her materials. Don't neutralise it into a generic dark theme.
+choice grounded in the materials. Don't neutralise it into a generic dark theme.
 
 ```
 --wax    #163A33   page ground
@@ -112,7 +112,7 @@ Densities in g/cm³. Real alloys vary by recipe; treat all of these as ±2%.
 
 **Known soft spot:** white gold density depends heavily on the whitening metal.
 Nickel-white runs near 14.7, palladium-white near 15.7. The table uses 15.50 as a
-midpoint. If her school specifies an alloy, use that number instead.
+midpoint. If the school specifies an alloy, use that number instead.
 
 ---
 
@@ -128,8 +128,8 @@ order = metal × (1 + allowance/100)
 ```
 
 Allowance covers sprues and the button. Offered at 0 / 10 / 15 / 20%.
-The UI shows the bare casting weight *and* the multiplier, so she learns her
-common one by heart.
+The UI shows the bare casting weight *and* the multiplier, so the common one
+gets learnt by heart.
 
 **Sheet.** `L × W × T` in mm³, divided by 1000 for cm³, times ρ.
 
@@ -155,8 +155,8 @@ The strip stretches on the outside and compresses on the inside; the true length
 is measured along the middle of the metal, so thickness is part of the sum.
 
 The Ø computed by the sizing rows is pushed into the blank-length Ø field
-automatically (`pushBlankDia`) until she types in that field herself; clearing it
-by hand hands control back. She only ever adds the thickness.
+automatically (`pushBlankDia`) until the user types in that field; clearing it
+by hand hands control back. Only the thickness needs entering.
 
 ---
 
@@ -180,8 +180,8 @@ Don't guess these — ask.
 1. **French ring sizes.** The tool treats FR/EU as circumference in mm (52 = 52 mm),
    which is the modern convention (ISO 8653, what Belgian schools use). An older
    French system uses circumference − 40, making that same ring a 12. A hint on the
-   Bague tab states the convention and the −40 relation, so she can't be misled
-   silently — but it has not been confirmed with her school. If they teach the old
+   Bague tab states the convention and the −40 relation, so the user can't be misled
+   silently — but it has not been confirmed with the school. If they teach the old
    one, swap it or show both rows.
 2. **White gold density**, per the note above.
 
@@ -191,7 +191,7 @@ Don't guess these — ask.
 
 Each of these was considered and cut. Don't add them without asking.
 
-- Stone/carat weight estimation — plausible, but she hasn't asked for it
+- Stone/carat weight estimation — plausible, but not requested
 - Gauge (B&S) conversion — European work is in mm; the chart would be dead weight
 - Solder melting temperatures — reference data, not a calculation
 - Light/dark toggle — the dark ground is the design
@@ -210,5 +210,5 @@ To update: edit `index.html`, **bump `VERSION` in `sw.js`** (otherwise phones ke
 the old cache), commit, push. Pages redeploys in about a minute; an installed app
 picks up the new version on its second launch after that.
 
-On her phone, in Safari: Share → *Sur l'écran d'accueil*. Open it once while online;
+On the phone, in Safari: Share → *Sur l'écran d'accueil*. Open it once while online;
 after that it launches fullscreen and works with no signal.
