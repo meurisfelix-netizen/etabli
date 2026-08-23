@@ -35,8 +35,7 @@ The user is a jewellery student in Brussels working in French.
 
 - **UI is French.** All labels, hints, empty states, `aria-label`s.
 - **Impersonal register.** Instructions use infinitives — *Indiquer le poids*,
-  *Renseigner les dimensions*. Never `tu`, never `vous`. The one exception is the
-  footer, `Pour Emma`.
+  *Renseigner les dimensions*. Never `tu`, never `vous`.
 - **Comma decimals, both directions.** Inputs are `type="text"` with
   `inputmode="decimal"` precisely so she can type `16,5`; `num()` normalises the
   comma before parsing. Output goes through `fr(n, decimals)`. Do not switch the

@@ -1,7 +1,7 @@
 /* Établi — cache hors ligne. Incrémenter VERSION à chaque mise en ligne. */
 "use strict";
 
-var VERSION = "etabli-v2";
+var VERSION = "etabli-v3";
 var FONT_CACHE = "etabli-fonts";   /* survit aux versions */
 var SHELL = [
   "./",
