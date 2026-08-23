@@ -1,7 +1,7 @@
 /* Établi — cache hors ligne. Incrémenter VERSION à chaque mise en ligne. */
 "use strict";
 
-var VERSION = "etabli-v3";
+var VERSION = "etabli-v4";
 var FONT_CACHE = "etabli-fonts";   /* survit aux versions */
 var SHELL = [
   "./",
@@ -15,7 +15,9 @@ var FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];
 
 self.addEventListener("install", function(e){
   e.waitUntil(
-    caches.open(VERSION).then(function(c){ return c.addAll(SHELL); })
+    caches.open(VERSION).then(function(c){
+      return c.addAll(SHELL.map(function(u){ return new Request(u, { cache: "reload" }); }));
+    })
       .then(function(){ return self.skipWaiting(); })
   );
 });
@@ -45,7 +47,10 @@ self.addEventListener("fetch", function(e){
   e.respondWith(
     caches.open(name).then(function(c){
       return c.match(e.request).then(function(cached){
-        var network = fetch(e.request).then(function(res){
+        var fresh = (name === VERSION)
+          ? fetch(e.request.url, { cache: "no-cache", credentials: "same-origin" })
+          : fetch(e.request);
+        var network = fresh.then(function(res){
           if (res && (res.ok || res.type === "opaque")) c.put(e.request, res.clone());
           return res;
         }).catch(function(){
