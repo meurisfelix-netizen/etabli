@@ -369,13 +369,13 @@ footer{
     </div>
 
     <div class="field">
-      <span class="group-label">Fondre en</span>
-      <div class="metals" id="metals-cast"></div>
+      <span class="group-label" id="lbl-metals-cast">Fondre en</span>
+      <div class="metals" id="metals-cast" role="group" aria-labelledby="lbl-metals-cast"></div>
     </div>
 
     <div class="field">
-      <span class="group-label">Marge tiges et culot</span>
-      <div class="seg" id="seg-allow">
+      <span class="group-label" id="lbl-allow">Marge tiges et culot</span>
+      <div class="seg" id="seg-allow" role="group" aria-labelledby="lbl-allow">
         <button type="button" data-v="0"  aria-pressed="false">0&nbsp;%</button>
         <button type="button" data-v="10" aria-pressed="true">10&nbsp;%</button>
         <button type="button" data-v="15" aria-pressed="false">15&nbsp;%</button>
@@ -385,7 +385,7 @@ footer{
 
     <div class="plate">
       <div class="plate-label">Métal à commander</div>
-      <div class="readout"><span class="value" id="castOut">—</span><span class="unit">g</span></div>
+      <div class="readout" aria-live="polite"><span class="value" id="castOut">—</span><span class="unit">g</span></div>
       <div class="note" id="castNote">Indiquer le poids de la cire pour voir le résultat en métal.</div>
     </div>
 
@@ -396,8 +396,8 @@ footer{
   <section class="panel" id="p-stock" role="tabpanel" aria-labelledby="tab-stock" hidden>
 
     <div class="field">
-      <span class="group-label">Matière</span>
-      <div class="metals" id="metals-stock"></div>
+      <span class="group-label" id="lbl-metals-stock">Matière</span>
+      <div class="metals" id="metals-stock" role="group" aria-labelledby="lbl-metals-stock"></div>
     </div>
 
     <div class="field">
@@ -440,7 +440,7 @@ footer{
 
     <div class="plate">
       <div class="plate-label">Pèse</div>
-      <div class="readout"><span class="value" id="stockOut">—</span><span class="unit">g</span></div>
+      <div class="readout" aria-live="polite"><span class="value" id="stockOut">—</span><span class="unit">g</span></div>
       <div class="note" id="stockNote">Renseigner les dimensions pour peser la matière.</div>
     </div>
   </section>
@@ -470,6 +470,8 @@ footer{
       <div class="row"><span class="k">Ø intérieur</span><span class="v" id="oDia">—</span></div>
     </div>
 
+    <p class="hint">La taille FR / EU est le tour de doigt en millimètres : une 52 fait 52 mm de tour. L'ancienne numérotation française retranche 40 (52 mm = taille 12).</p>
+
     <p class="hint">Un anneau de 4 mm ou plus large serre davantage qu'un anneau fin. Prévoir une demi-taille US de plus, soit environ 1,5 mm de tour de doigt.</p>
 
     <div class="divider">
@@ -489,7 +491,7 @@ footer{
 
       <div class="plate">
         <div class="plate-label">Découper à</div>
-        <div class="readout"><span class="value" id="blankOut">—</span><span class="unit">mm</span></div>
+        <div class="readout" aria-live="polite"><span class="value" id="blankOut">—</span><span class="unit">mm</span></div>
         <div class="note" id="blankNote">Mesurée au milieu de l'épaisseur : celle-ci compte donc.</div>
       </div>
     </div>
@@ -614,10 +616,17 @@ function ukFromUs(us){
   return UK[idx];
 }
 
+/* le Ø calculé descend dans la bande tant qu'il n'y est pas saisi à la main */
+var isBlankDiaAuto = true;
+function pushBlankDia(dia){
+  if (!isBlankDiaAuto) return;
+  document.getElementById("bDia").value = dia ? fr(dia,2) : "";
+}
+
 function ringCalc(){
   var v = num("sizeVal");
   var sys = document.getElementById("sizeSys").value;
-  if (!v){ set("oEu","—"); set("oUs","—"); set("oUk","—"); set("oDia","—"); return; }
+  if (!v){ set("oEu","—"); set("oUs","—"); set("oUk","—"); set("oDia","—"); pushBlankDia(0); return; }
 
   var circ;
   if (sys === "eu")  circ = v;
@@ -631,6 +640,7 @@ function ringCalc(){
   set("oUs", us > 0 ? (Math.round(us*4)/4).toFixed(2).replace(/\.?0+$/,"").replace(".",",") : "—");
   set("oUk", us > 0 ? ukFromUs(us) : "—");
   set("oDia", fr(dia,2) + " mm");
+  pushBlankDia(dia);
 }
 
 function recalc(){
@@ -670,18 +680,21 @@ function recalc(){
     document.getElementById("stockNote").textContent = "Renseigner les dimensions pour peser la matière.";
   }
 
+  ringCalc();
+
   /* bande */
   var bd = num("bDia"), bt = num("bThk");
-  if (bd){
+  if (bd && bt){
     set("blankOut", fr(Math.PI * (bd + bt), 1));
     document.getElementById("blankNote").innerHTML =
-      "Fibre neutre d'une bande de <b>" + fr(bt,2) + " mm</b> autour d'un Ø de <b>" + fr(bd,1) + " mm</b>.";
+      "Fibre neutre d'une bande de <b>" + fr(bt,2) + " mm</b> autour d'un Ø de <b>" + fr(bd,2) + " mm</b>.";
+  } else if (bd){
+    set("blankOut","—");
+    document.getElementById("blankNote").textContent = "Indiquer l'épaisseur de la bande : sans elle, la longueur serait trop courte.";
   } else {
     set("blankOut","—");
     document.getElementById("blankNote").textContent = "Mesurée au milieu de l'épaisseur : celle-ci compte donc.";
   }
-
-  ringCalc();
 }
 
 document.getElementById("stockForm").addEventListener("change", function(){
@@ -691,8 +704,12 @@ document.getElementById("stockForm").addEventListener("change", function(){
   recalc();
 });
 
-["waxWeight","sLen","sWid","sThk","wDia","wLen","sizeVal","bDia","bThk"].forEach(function(id){
+["waxWeight","sLen","sWid","sThk","wDia","wLen","sizeVal","bThk"].forEach(function(id){
   document.getElementById(id).addEventListener("input", recalc);
+});
+document.getElementById("bDia").addEventListener("input", function(){
+  isBlankDiaAuto = this.value.trim() === "";
+  recalc();
 });
 document.getElementById("sizeSys").addEventListener("change", recalc);
 

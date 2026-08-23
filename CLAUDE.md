@@ -155,6 +155,10 @@ length = π × (inner_Ø + thickness)
 The strip stretches on the outside and compresses on the inside; the true length
 is measured along the middle of the metal, so thickness is part of the sum.
 
+The Ø computed by the sizing rows is pushed into the blank-length Ø field
+automatically (`pushBlankDia`) until she types in that field herself; clearing it
+by hand hands control back. She only ever adds the thickness.
+
 ---
 
 ## Quality floor
@@ -175,9 +179,11 @@ Already in place — keep it there.
 Don't guess these — ask.
 
 1. **French ring sizes.** The tool treats FR/EU as circumference in mm (52 = 52 mm),
-   which is the modern convention. An older French system uses circumference − 40,
-   making that same ring a 12. If her school teaches the old one, either swap it or
-   show both rows.
+   which is the modern convention (ISO 8653, what Belgian schools use). An older
+   French system uses circumference − 40, making that same ring a 12. A hint on the
+   Bague tab states the convention and the −40 relation, so she can't be misled
+   silently — but it has not been confirmed with her school. If they teach the old
+   one, swap it or show both rows.
 2. **White gold density**, per the note above.
 
 ---
